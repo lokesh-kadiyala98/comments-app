@@ -41,27 +41,34 @@ const commentSchema = new mongoose.Schema({
 commentSchema.post('save', async function () {
     const comment = this
     try {
-        const interactionUP = new Interaction({
-            user: '636ab4d105178fe2cf3daf83',
-            comment: comment._id,
-            type: 'UP'
+        const interaction = await Interaction.find({
+            user: new mongoose.Types.ObjectId('636ab4d105178fe2cf3daf83'),
+            comment: comment._id
         })
-        await interactionUP.save()
 
-        const interactionDOWN = new Interaction({
-            user: '636ab4d105178fe2cf3daf83',
-            comment: comment._id,
-            type: 'DOWN'
-        })
-        await interactionDOWN.save()
-
-        await Comment.findByIdAndUpdate(comment._id, {
-            $push: {
-                interactions: {
-                    $each: [interactionUP._id, interactionDOWN._id]
+        if (!interaction.length) {
+            const interactionUP = new Interaction({
+                user: '636ab4d105178fe2cf3daf83',
+                comment: comment._id,
+                type: 'UP'
+            })
+            await interactionUP.save()
+    
+            const interactionDOWN = new Interaction({
+                user: '636ab4d105178fe2cf3daf83',
+                comment: comment._id,
+                type: 'DOWN'
+            })
+            await interactionDOWN.save()
+    
+            await Comment.findByIdAndUpdate(comment._id, {
+                $push: {
+                    interactions: {
+                        $each: [interactionUP._id, interactionDOWN._id]
+                    }
                 }
-            }
-        })
+            })
+        }
     } catch (e) {
         
     }

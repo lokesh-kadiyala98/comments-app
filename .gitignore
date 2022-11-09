@@ -118,3 +118,4 @@ dist
 client/node_modules
 
 client/*.log
+/client/node_modules/
