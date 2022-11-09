@@ -24,18 +24,16 @@ app.get('/ping', (req, res) => {
     })
 })
 
-/*
-app.post('/user', async (req, res) => {
-    const user = new User(req.body)
+// app.post('/user', async (req, res) => {
+//     const user = new User(req.body)
 
-    try {
-        await user.save()
+//     try {
+//         await user.save()
 
-        res.status(201).send(user)
-    } catch (error) {
-        res.status(500).send()
-    }
-})
-*/
+//         res.status(201).send(user)
+//     } catch (error) {
+//         res.status(500).send()
+//     }
+// })
 
 app.listen(PORT, () => console.log(chalk.blue(`Server started on PORT ${PORT}...`)))
